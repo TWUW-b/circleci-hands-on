@@ -5,7 +5,7 @@ jobs:
     docker:
       - image: node:9.4.0
     steps:
-      - checkout
+      - checkout #githubのソースコードをチェックアウト
       - restore_cache:
           key: yarn-{{ .Branch }}-{{ checksum "yarn.lock" }}
       - run:
@@ -34,7 +34,7 @@ jobs:
           command: ls && ls -a
       - run:
           name: access
-          command: curl https://www.bauhausify.com/d
+          command: curl https://music.youtube.com/search?q=secret+dance+hall+psyqui
       - run:
           name: Test
           command: yarn test
