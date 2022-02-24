@@ -22,7 +22,7 @@ jobs:
           command: ls -la dist
       - run:
           name: whats 
-          command: echo {{ .Branch }}
+          command: echo -{{ .Branch }}
       - save_cache: # 追加
           key: yarn-{{ .Branch }}-{{ checksum "yarn.lock" }}
           paths:
