@@ -1,29 +1,27 @@
-# Use the latest 2.1 version of CircleCI pipeline process engine.
-# See: https://circleci.com/docs/2.0/configuration-reference
-version: 2.1
-
-# Define a job to be invoked later in a workflow.
-# See: https://circleci.com/docs/2.0/configuration-reference/#jobs
+version: 2
 jobs:
-  say-hello:
-    # Specify the execution environment. You can specify an image from Dockerhub or use one of our Convenience Images from CircleCI's Developer Hub.
-    # See: https://circleci.com/docs/2.0/configuration-reference/#docker-machine-macos-windows-executor
+  build:
+    working_directory: ~/workspace
     docker:
-      - image: cimg/base:stable
-    # Add steps to the job
-    # See: https://circleci.com/docs/2.0/configuration-reference/#steps
+      - image: node:9.4.0 #イメージを選択
     steps:
-      - checkout
+      - checkout 
+      - restore_cache:
+        key: yarn-{{.Branch}}-{{checksum"yarn.lock"}}
       - run:
-          name: "Say hello"
-          command: "echo Hello, World!"
+        name: pwd
+        command: pwd
       - run:
-          name: "test "
-          command: "echo this is circle ci test"
+          name: Install dependencies #名前を設定
+          command: yarn   #実行するコマンド
+      - run:
+          name: Build
+          command: yarn build
+      - run:
+          name: Check dist
+          command: ls -la dist
+      - save_cache:
+        key: yarn-{{.Branch}}--{{checksum "yarn.lock"}}
+        paths:
+          - ~/workspace/node_modules
 
-# Invoke jobs via workflows
-# See: https://circleci.com/docs/2.0/configuration-reference/#workflows
-workflows:
-  say-hello-workflow:
-    jobs:
-      - say-hello
