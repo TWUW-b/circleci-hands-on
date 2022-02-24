@@ -1,27 +1,23 @@
 version: 2
 jobs:
   build:
-    working_directory: ~/workspace
+    working_directory: ~/workspace # 追加
     docker:
-      - image: node:9.4.0 #イメージを選択
+      - image: node:9.4.0
     steps:
-      - checkout 
-      - restore_cache:
-        key: yarn-{{.Branch}}-{{checksum"yarn.lock"}}
+      - checkout
+      - restore_cache: # 追加
+          key: yarn-{{ .Branch }}-{{ checksum "yarn.lock" }}
       - run:
-        name: pwd
-        command: pwd
-      - run:
-          name: Install dependencies #名前を設定
-          command: yarn   #実行するコマンド
+          name: Install dependencies
+          command: yarn
       - run:
           name: Build
           command: yarn build
       - run:
           name: Check dist
           command: ls -la dist
-      - save_cache:
-        key: yarn-{{.Branch}}--{{checksum "yarn.lock"}}
-        paths:
-          - ~/workspace/node_modules
-
+      - save_cache: # 追加
+          key: yarn-{{ .Branch }}-{{ checksum "yarn.lock" }}
+          paths:
+            - ~/workspace/node_modules
