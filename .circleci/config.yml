@@ -1,29 +1,45 @@
 version: 2
 jobs:
   build:
-    working_directory: ~/workspace # 追加
+    working_directory: ~/workspace
     docker:
       - image: node:9.4.0
     steps:
       - checkout
-      - restore_cache: # 追加
+      - restore_cache:
           key: yarn-{{ .Branch }}-{{ checksum "yarn.lock" }}
       - run:
           name: Install dependencies
           command: yarn
       - run:
-          name: check where iam
-          command: pwd && cd .. && pwd
+          name: Build
+          command: yarn build
+      - save_cache:
+          key: yarn-{{ .Branch }}-{{ checksum "yarn.lock" }}
+          paths:
+            - ~/workspace/node_modules
+  test:
+    working_directory: ~/workspace
+    docker:
+      - image: node:9.4.0
+    steps:
+      - checkout
+      - restore_cache:
+          key: yarn-{{ .Branch }}-{{ checksum "yarn.lock" }}
+      - run:
+          name: Install dependencies
+          command: yarn
       - run:
           name: Build
           command: yarn build
       - run:
-          name: Check dist
-          command: ls -la dist
-      - run:
-          name: whats 
-          command: echo -{{ .Branch }}
-      - save_cache: # 追加
-          key: yarn-{{ .Branch }}-{{ checksum "yarn.lock" }}
-          paths:
-            - ~/workspace/node_modules
+          name: Test
+          command: yarn test
+workflows:
+  version: 2
+  build_and_test: # workflow名
+    jobs:
+      - build
+      - test:
+          requires: # buildが成功したら実行する
+            - build
