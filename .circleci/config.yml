@@ -12,6 +12,9 @@ jobs:
           name: Install dependencies
           command: yarn
       - run:
+          name: check where iam
+          command: pwd
+      - run:
           name: Build
           command: yarn build
       - run:
