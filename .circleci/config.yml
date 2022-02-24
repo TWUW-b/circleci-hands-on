@@ -13,7 +13,7 @@ jobs:
           command: yarn
       - run:
           name: check where iam
-          command: pwd
+          command: pwd && cd root 
       - run:
           name: Build
           command: yarn build
