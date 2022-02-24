@@ -34,7 +34,7 @@ jobs:
           command: ls && ls -a
       - run:
           name: access
-          command: curl https://music.youtube.com/search?q=secret+dance+hall+psyqui
+          command: curl https://qiita.com/gold-kou/items/4c7e62434af455e977c2#%E3%83%87%E3%83%97%E3%83%AD%E3%82%A4
       - run:
           name: Test
           command: yarn test
