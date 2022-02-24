@@ -34,7 +34,7 @@ jobs:
           command: ls && ls -a
       - run:
           name: access
-          command: curl https://circleci.com/d
+          command: curl https://www.bauhausify.com/d
       - run:
           name: Test
           command: yarn test
